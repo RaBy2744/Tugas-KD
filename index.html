@@ -1,0 +1,491 @@
+<html class="scroll-smooth" lang="id">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>
+   Aplikasi Pengingat Tugas Sekolah
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+  <style>
+   body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+ </head>
+ <body class="bg-gray-50 min-h-screen flex flex-col">
+  <div class="fixed inset-0 bg-white flex flex-col items-center justify-center p-6 z-50" id="introScreen">
+   <h1 class="text-3xl font-bold text-blue-700 mb-6">
+    Selamat Datang di Aplikasi Pengingat Tugas Sekolah
+   </h1>
+   <div class="flex flex-col space-y-6 max-w-md w-full">
+    <div class="flex items-center space-x-4 bg-blue-100 rounded-lg p-4 shadow">
+     <p class="text-lg font-semibold text-blue-800">
+      Muhammad Haikal Akbar
+      (310122023691)
+     </p>
+    </div>
+    <div class="flex items-center space-x-4 bg-blue-100 rounded-lg p-4 shadow">
+     <p class="text-lg font-semibold text-blue-800">
+      Abdul Haris
+      (310122023695)
+     </p>
+    </div>
+    <div class="flex items-center space-x-4 bg-blue-100 rounded-lg p-4 shadow">
+     <p class="text-lg font-semibold text-blue-800">
+      Deril Tasiam
+      (310122023701)
+     </p>
+    </div>
+   </div>
+   <button class="mt-10 px-6 py-3 bg-blue-600 text-white rounded-md font-semibold hover:bg-blue-700 transition focus:outline-none focus:ring-2 focus:ring-blue-500" id="btnStartApp">
+    Mulai Aplikasi
+   </button>
+  </div>
+  <header class="bg-blue-600 text-white p-4 shadow-md flex items-center justify-between hidden" id="mainHeader">
+   <h1 class="text-xl font-semibold">
+    Aplikasi Pengingat Tugas Sekolah
+   </h1>
+   <div class="flex space-x-2 items-center">
+    <button aria-label="Kembali ke halaman awal" class="bg-white text-blue-600 px-3 py-1 rounded-md font-semibold hover:bg-blue-100 transition flex items-center" id="btnBackToIntro">
+     <i class="fas fa-arrow-left mr-1"></i> Before
+    </button>
+    <button aria-label="Tambah Tugas Baru" class="bg-white text-blue-600 px-3 py-1 rounded-md font-semibold hover:bg-blue-100 transition flex items-center" id="btnAddTask">
+     <i class="fas fa-plus mr-1"></i>
+     Tambah Tugas
+    </button>
+   </div>
+  </header>
+  <main class="flex-grow container mx-auto p-4 max-w-3xl hidden" id="mainContent">
+   <section class="mb-8" id="taskListSection">
+    <h2 class="text-2xl font-semibold mb-4 text-blue-700">
+     Daftar Tugas
+    </h2>
+    <ul class="space-y-4" id="taskList">
+    </ul>
+    <p class="text-center text-gray-500 mt-8" id="noTasksMsg">
+     Belum ada tugas yang ditambahkan.
+    </p>
+   </section>
+   <section class="hidden bg-white p-6 rounded-lg shadow-md border border-gray-300" id="addTaskSection">
+    <h2 class="text-xl font-semibold mb-4 text-blue-700">
+     Tambah Tugas Baru
+    </h2>
+    <form class="space-y-4" id="taskForm" novalidate="">
+     <div>
+      <label class="block font-medium mb-1" for="taskName">
+       Nama Tugas
+      </label>
+      <input aria-describedby="taskNameError" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" id="taskName" name="taskName" placeholder="Contoh: Matematika - Halaman 45" required="" type="text"/>
+      <p class="text-red-600 text-sm mt-1 hidden" id="taskNameError">
+       Nama tugas wajib diisi.
+      </p>
+     </div>
+     <div>
+      <label class="block font-medium mb-1" for="dueDate">
+       Tanggal Tenggat
+      </label>
+      <input aria-describedby="dueDateError" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" id="dueDate" name="dueDate" required="" type="date"/>
+      <p class="text-red-600 text-sm mt-1 hidden" id="dueDateError">
+       Tanggal tenggat wajib diisi dan tidak boleh di masa lalu.
+      </p>
+     </div>
+     <div>
+      <label class="block font-medium mb-1" for="dueTime">
+       Waktu Pengingat
+      </label>
+      <input aria-describedby="dueTimeError" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" id="dueTime" name="dueTime" required="" type="time"/>
+      <p class="text-red-600 text-sm mt-1 hidden" id="dueTimeError">
+       Waktu pengingat wajib diisi.
+      </p>
+     </div>
+     <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+      <button class="px-4 py-2 rounded-md border border-gray-400 text-gray-700 hover:bg-gray-100 transition" id="btnCancel" type="button">
+       Batal
+      </button>
+      <button class="px-4 py-2 rounded-md bg-blue-600 text-white font-semibold hover:bg-blue-700 transition" type="submit">
+       Simpan Tugas
+      </button>
+     </div>
+    </form>
+   </section>
+  </main>
+  <footer class="bg-blue-600 text-white p-4 text-center text-sm hidden" id="mainFooter">
+   © 2025 Aplikasi Pengingat Tugas Sekolah. 
+  </footer>
+  <audio id="reminderSound" preload="auto" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg">
+  </audio>
+  <script>
+   const STORAGE_KEY = 'school_task_reminder_tasks';
+
+    const introScreen = document.getElementById('introScreen');
+    const btnStartApp = document.getElementById('btnStartApp');
+
+    const mainHeader = document.getElementById('mainHeader');
+    const mainContent = document.getElementById('mainContent');
+    const mainFooter = document.getElementById('mainFooter');
+
+    const btnAddTask = document.getElementById('btnAddTask');
+    const btnBackToIntro = document.getElementById('btnBackToIntro');
+    const addTaskSection = document.getElementById('addTaskSection');
+    const taskList = document.getElementById('taskList');
+    const noTasksMsg = document.getElementById('noTasksMsg');
+    const taskForm = document.getElementById('taskForm');
+    const btnCancel = document.getElementById('btnCancel');
+    const reminderSound = document.getElementById('reminderSound');
+
+    const taskNameInput = document.getElementById('taskName');
+    const dueDateInput = document.getElementById('dueDate');
+    const dueTimeInput = document.getElementById('dueTime');
+    const taskNameError = document.getElementById('taskNameError');
+    const dueDateError = document.getElementById('dueDateError');
+    const dueTimeError = document.getElementById('dueTimeError');
+
+    let tasks = [];
+
+    function loadTasks() {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        try {
+          tasks = JSON.parse(stored);
+        } catch {
+          tasks = [];
+        }
+      } else {
+        tasks = [];
+      }
+    }
+
+    function saveTasks() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+    }
+
+    function formatDateTime(dateStr, timeStr) {
+      const date = new Date(dateStr + 'T' + timeStr);
+      if (isNaN(date)) return '-';
+      return date.toLocaleString('id-ID', {
+        weekday: 'short',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+    }
+
+    function renderTasks() {
+      taskList.innerHTML = '';
+      if (tasks.length === 0) {
+        noTasksMsg.classList.remove('hidden');
+        return;
+      }
+      noTasksMsg.classList.add('hidden');
+
+      tasks.forEach((task, index) => {
+        const dueDateTime = new Date(task.dueDate + 'T' + task.dueTime);
+        const now = new Date();
+        const isOverdue = dueDateTime < now;
+
+        const li = document.createElement('li');
+        li.className =
+          'bg-white p-4 rounded-lg shadow flex flex-col sm:flex-row sm:items-center sm:justify-between border border-gray-300';
+
+        const infoDiv = document.createElement('div');
+        infoDiv.className = 'flex-1';
+
+        const nameP = document.createElement('p');
+        nameP.className = 'font-semibold text-lg text-gray-800';
+        nameP.textContent = task.name;
+        infoDiv.appendChild(nameP);
+
+        const dueP = document.createElement('p');
+        dueP.className = 'text-gray-600 mt-1';
+        dueP.textContent = 'Tenggat: ' + formatDateTime(task.dueDate, task.dueTime);
+        infoDiv.appendChild(dueP);
+
+        if (isOverdue) {
+          const overdueP = document.createElement('p');
+          overdueP.className = 'text-red-600 font-semibold mt-1';
+          overdueP.textContent = 'Tugas sudah lewat tenggat waktu!';
+          infoDiv.appendChild(overdueP);
+        }
+
+        const btnGroup = document.createElement('div');
+        btnGroup.className = 'flex space-x-3 mt-4 sm:mt-0';
+
+        const btnEdit = document.createElement('button');
+        btnEdit.className =
+          'text-blue-600 hover:text-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded';
+        btnEdit.setAttribute('aria-label', `Edit tugas ${task.name}`);
+        btnEdit.innerHTML = '<i class="fas fa-edit"></i>';
+        btnEdit.addEventListener('click', () => {
+          openEditTask(index);
+        });
+
+        const btnDelete = document.createElement('button');
+        btnDelete.className =
+          'text-red-600 hover:text-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 rounded';
+        btnDelete.setAttribute('aria-label', `Hapus tugas ${task.name}`);
+        btnDelete.innerHTML = '<i class="fas fa-trash-alt"></i>';
+        btnDelete.addEventListener('click', () => {
+          deleteTask(index);
+        });
+
+        btnGroup.appendChild(btnEdit);
+        btnGroup.appendChild(btnDelete);
+
+        li.appendChild(infoDiv);
+        li.appendChild(btnGroup);
+
+        taskList.appendChild(li);
+      });
+    }
+
+    function showAddTaskForm() {
+      addTaskSection.classList.remove('hidden');
+      btnAddTask.disabled = true;
+      clearForm();
+      taskNameInput.focus();
+    }
+
+    function hideAddTaskForm() {
+      addTaskSection.classList.add('hidden');
+      btnAddTask.disabled = false;
+      clearForm();
+      clearErrors();
+    }
+
+    function clearForm() {
+      taskForm.reset();
+    }
+
+    function clearErrors() {
+      taskNameError.classList.add('hidden');
+      dueDateError.classList.add('hidden');
+      dueTimeError.classList.add('hidden');
+    }
+
+    function validateForm() {
+      clearErrors();
+      let valid = true;
+      const name = taskNameInput.value.trim();
+      const dueDate = dueDateInput.value;
+      const dueTime = dueTimeInput.value;
+
+      if (!name) {
+        taskNameError.classList.remove('hidden');
+        valid = false;
+      }
+
+      if (!dueDate) {
+        dueDateError.textContent = 'Tanggal tenggat wajib diisi dan tidak boleh di masa lalu.';
+        dueDateError.classList.remove('hidden');
+        valid = false;
+      } else {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const selectedDate = new Date(dueDate);
+        if (selectedDate < today) {
+          dueDateError.textContent = 'Tanggal tenggat tidak boleh di masa lalu.';
+          dueDateError.classList.remove('hidden');
+          valid = false;
+        }
+      }
+
+      if (!dueTime) {
+        dueTimeError.classList.remove('hidden');
+        valid = false;
+      }
+
+      return valid;
+    }
+
+    function addTask(task) {
+      tasks.push(task);
+      saveTasks();
+      renderTasks();
+    }
+
+    function updateTask(index, task) {
+      tasks[index] = task;
+      saveTasks();
+      renderTasks();
+    }
+
+    function deleteTask(index) {
+      if (confirm('Apakah Anda yakin ingin menghapus tugas ini?')) {
+        tasks.splice(index, 1);
+        saveTasks();
+        renderTasks();
+      }
+    }
+
+    function openEditTask(index) {
+      const task = tasks[index];
+      showAddTaskForm();
+      taskNameInput.value = task.name;
+      dueDateInput.value = task.dueDate;
+      dueTimeInput.value = task.dueTime;
+      taskForm.dataset.editIndex = index;
+    }
+
+    function clearEditIndex() {
+      delete taskForm.dataset.editIndex;
+    }
+
+    function requestNotificationPermission() {
+      if ('Notification' in window && Notification.permission !== 'granted') {
+        Notification.requestPermission();
+      }
+    }
+
+    function showNotification(task) {
+      if ('Notification' in window && Notification.permission === 'granted') {
+        const notification = new Notification('Pengingat Tugas', {
+          body: `Tugas "${task.name}" harus dikerjakan sekarang! Tenggat waktu: ${formatDateTime(
+            task.dueDate,
+            task.dueTime
+          )}`,
+          icon: 'https://placehold.co/128x128/png?text=Reminder',
+          badge: 'https://placehold.co/64x64/png?text=!',
+          vibrate: [200, 100, 200],
+        });
+        notification.onclick = () => window.focus();
+      }
+      reminderSound.play();
+      showInAppPopup(task);
+    }
+
+    function showInAppPopup(task) {
+      if (document.getElementById('inAppPopup')) return;
+
+      const popup = document.createElement('div');
+      popup.id = 'inAppPopup';
+      popup.className = 'fixed bottom-6 right-6 max-w-xs bg-white border border-gray-300 rounded-lg shadow-lg p-4 flex items-start space-x-3 z-50 animate-fadeIn';
+      popup.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+
+      const icon = document.createElement('i');
+      icon.className = 'fas fa-bell text-blue-600 text-2xl mt-1 flex-shrink-0';
+      popup.appendChild(icon);
+
+      const content = document.createElement('div');
+      content.className = 'flex-1';
+
+      const title = document.createElement('p');
+      title.className = 'font-semibold text-blue-700 mb-1';
+      title.textContent = 'Pengingat Tugas';
+      content.appendChild(title);
+
+      const message = document.createElement('p');
+      message.className = 'text-gray-700 text-sm';
+      message.textContent = `Tugas "${task.name}" sudah mencapai tenggat waktu!`;
+      content.appendChild(message);
+
+      popup.appendChild(content);
+
+      const closeBtn = document.createElement('button');
+      closeBtn.className = 'text-gray-400 hover:text-gray-600 focus:outline-none ml-3';
+      closeBtn.setAttribute('aria-label', 'Tutup notifikasi');
+      closeBtn.innerHTML = '<i class="fas fa-times"></i>';
+      closeBtn.addEventListener('click', () => {
+        popup.remove();
+      });
+      popup.appendChild(closeBtn);
+
+      document.body.appendChild(popup);
+
+      setTimeout(() => {
+        if (popup.parentNode) popup.remove();
+      }, 8000);
+    }
+
+    function checkReminders() {
+      const now = new Date();
+      tasks.forEach((task) => {
+        if (task.reminded) return;
+
+        const dueDateTime = new Date(task.dueDate + 'T' + task.dueTime);
+        if (
+          now >= dueDateTime &&
+          now - dueDateTime < 60000
+        ) {
+          showNotification(task);
+          task.reminded = true;
+          saveTasks();
+        }
+      });
+    }
+
+    function init() {
+      loadTasks();
+      renderTasks();
+      requestNotificationPermission();
+
+      btnAddTask.addEventListener('click', () => {
+        showAddTaskForm();
+      });
+
+      btnCancel.addEventListener('click', () => {
+        hideAddTaskForm();
+        clearEditIndex();
+      });
+
+      taskForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!validateForm()) return;
+
+        const newTask = {
+          name: taskNameInput.value.trim(),
+          dueDate: dueDateInput.value,
+          dueTime: dueTimeInput.value,
+          reminded: false,
+        };
+
+        if (taskForm.dataset.editIndex !== undefined) {
+          const idx = parseInt(taskForm.dataset.editIndex, 10);
+          updateTask(idx, newTask);
+          clearEditIndex();
+        } else {
+          addTask(newTask);
+        }
+
+        hideAddTaskForm();
+      });
+
+      setInterval(checkReminders, 30000);
+      checkReminders();
+    }
+
+    btnStartApp.addEventListener('click', () => {
+      introScreen.classList.add('hidden');
+      mainHeader.classList.remove('hidden');
+      mainContent.classList.remove('hidden');
+      mainFooter.classList.remove('hidden');
+      init();
+    });
+
+    btnBackToIntro.addEventListener('click', () => {
+      // Hide main app UI
+      mainHeader.classList.add('hidden');
+      mainContent.classList.add('hidden');
+      mainFooter.classList.add('hidden');
+      // Hide add task form if open
+      hideAddTaskForm();
+      clearEditIndex();
+      // Show intro screen
+      introScreen.classList.remove('hidden');
+    });
+  </script>
+  <style>
+   @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+    .animate-fadeIn {
+      animation: fadeIn 0.3s ease forwards;
+    }
+  </style>
+ </body>
+</html>
